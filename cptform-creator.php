@@ -4,7 +4,7 @@
  * Description: This plugin contains extra custom functions to allow front end submissions of limited items using a custom ACF Pro post type.
  * Author: WPProAtoZ
  * Author URI: https://wpproatoz.com
- * Version: 1.0.1
+ * Version: 1.0.2
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Author: WPProAtoZ.com
