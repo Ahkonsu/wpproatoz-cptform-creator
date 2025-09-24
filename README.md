@@ -1,6 +1,6 @@
 # ACF Custom Frontend Submission Form
 
-![Plugin Version](https://img.shields.io/badge/version-1.0-blue)
+![Plugin Version](https://img.shields.io/badge/version-1.0.1-blue)
 ![WordPress Compatibility](https://img.shields.io/badge/WordPress-6.0%2B-green)
 ![PHP Compatibility](https://img.shields.io/badge/PHP-8.0%2B-green)
 ![License](https://img.shields.io/badge/license-GPLv2%2B-blue)
@@ -62,7 +62,7 @@ git clone https://github.com/Ahkonsu/wpproatoz-cptform-creators.git wpproatoz-cp
    - **reCAPTCHA**:
      - None: Uses honeypot.
      - v2 (Checkbox): Requires user verification.
-     - v3 (Invisible): Background validation with score threshold (0.0–1.0, default: 0.5).
+     - v3 (Invisible): Background validation with score threshold (0.0â€“1.0, default: 0.5).
      - Enter Site Key and Secret Key from [Google reCAPTCHA](https://www.google.com/recaptcha/admin).
    - **Field Labels**: Customize labels (e.g., "Testimonial Name", "Your Story", "Upload Video").
 3. Save settings.
