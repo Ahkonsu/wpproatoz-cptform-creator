@@ -4,16 +4,16 @@ Tags: acf, custom post type, frontend form, video testimonial, recaptcha
 Requires at least: 6.0
 Tested up to: 6.5
 Requires PHP: 8.0
-Stable tag: 1.0
+Stable tag: 1.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Requires Plugins: advanced-custom-fields
+Requires Plugins: advanced-custom-fields-pro
 
-A WordPress plugin for creating a frontend submission form for video testimonials using ACF, with reCAPTCHA support and admin management.
+A WordPress plugin for creating a frontend submission form for video testimonials using ACF Pro, with reCAPTCHA support and admin management.
 
 == Description ==
 
-The ACF Custom Frontend Submission Form plugin allows users to submit video testimonials via a frontend form, integrated with Advanced Custom Fields (ACF). It supports a custom post type (`video-testimonial`) with fields for title, content, and video upload. Features include customizable field labels, file restrictions (30 MB max, .mov, .mp4, .m4v), reCAPTCHA v2/v3 for spam protection, and admin tools to manage post statuses and form settings.
+The ACF Custom Frontend Submission Form plugin allows users to submit video testimonials via a frontend form, integrated with Advanced Custom Fields Pro (ACF Pro). It supports a custom post type (`video-testimonial`) with fields for title, content, and video upload. Features include customizable field labels, file restrictions (30 MB max, .mov, .mp4, .m4v), reCAPTCHA v2/v3 for spam protection, and admin tools to manage post statuses and form settings.
 
 **Key Features:**
 - Frontend form with shortcode `[video_testimonial_form]` for submitting video testimonials.
@@ -30,7 +30,7 @@ The ACF Custom Frontend Submission Form plugin allows users to submit video test
 
 1. Upload the `wpproatoz-cptform-creators` folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin through the 'Plugins' menu in WordPress.
-3. Install and activate the required Advanced Custom Fields (ACF) plugin when prompted.
+3. Install and activate the required Advanced Custom Fields Pro (ACF Pro) plugin when prompted.
 4. Configure the plugin settings under **Video Testimonials > ACF Custom Form** in the WordPress admin.
 5. Add the `[video_testimonial_form]` shortcode to a page for the submission form.
 6. Add the `[video_testimonials]` shortcode to display approved testimonials.
@@ -38,7 +38,7 @@ The ACF Custom Frontend Submission Form plugin allows users to submit video test
 == Frequently Asked Questions ==
 
 = What are the requirements for this plugin? =
-The plugin requires WordPress 6.0+, PHP 8.0+, and the Advanced Custom Fields (ACF) plugin.
+The plugin requires WordPress 6.0+, PHP 8.0+, and the Advanced Custom Fields Pro (ACF Pro) plugin.
 
 = How do I set up reCAPTCHA? =
 1. Register your site at [Google reCAPTCHA](https://www.google.com/recaptcha/admin).
@@ -72,4 +72,4 @@ Yes, if Form Access is set to Public in **Video Testimonials > ACF Custom Form**
 == Upgrade Notice ==
 
 = 1.0 =
-Initial release of the plugin. No upgrades required.
+Initial release of the plugin.

@@ -3,34 +3,34 @@ ACF Custom Frontend Submission Form - Documentation
 
 Overview
 --------
-The ACF Custom Frontend Submission Form plugin enables users to submit video testimonials via a frontend form, integrated with Advanced Custom Fields (ACF). It uses a custom post type (`video-testimonial`) with fields for title, content, and video upload. The plugin includes customizable field labels, video upload restrictions, reCAPTCHA v2/v3, public/private form access, and admin management tools.
+The ACF Custom Frontend Submission Form plugin enables users to submit video testimonials via a frontend form, integrated with Advanced Custom Fields Pro (ACF Pro). It uses a custom post type (`video-testimonial`) with fields for title, content, and video upload. The plugin includes customizable field labels, video upload restrictions, reCAPTCHA v2/v3, public/private form access, and admin management tools.
 
 Shortcodes
 ----------
 1. [video_testimonial_form]
-   - Displays a frontend form for submitting video testimonials.
-   - Fields: Title, Content, Video Upload (30 MB max, .mov, .mp4, .m4v).
-   - Usage: Add `[video_testimonial_form]` to a page or post content.
-   - Behavior:
-     - Public mode: Allows guest submissions (author set to admin, ID 1).
-     - Private mode: Requires logged-in users (author set to current user).
-     - Includes reCAPTCHA v2 (Checkbox) or v3 (Invisible) if enabled, or a honeypot for spam protection.
-     - Displays a warning: "Video files limited to .mov, .m4v, .mp4 files only and files limited to 30MB max."
-     - Submits as a Pending `video-testimonial` post for admin review.
+- Displays a frontend form for submitting video testimonials.
+- Fields: Title, Content, Video Upload (30 MB max, .mov, .mp4, .m4v).
+- Usage: Add `[video_testimonial_form]` to a page or post content.
+- Behavior:
+  - Public mode: Allows guest submissions (author set to admin, ID 1).
+  - Private mode: Requires logged-in users (author set to current user).
+  - Includes reCAPTCHA v2 (Checkbox) or v3 (Invisible) if enabled, or a honeypot for spam protection.
+  - Displays a warning: "Video files limited to .mov, .m4v, .mp4 files only and files limited to 30MB max."
+  - Submits as a Pending `video-testimonial` post for admin review.
 
 2. [video_testimonials limit="5"]
-   - Displays a list of published video testimonials.
-   - Attributes:
-     - limit: Number of testimonials to show (default: 5).
-   - Usage: Add `[video_testimonials limit="3"]` to a page or post.
-   - Displays: Title, video (if uploaded), and content for each testimonial.
+- Displays a list of published video testimonials.
+- Attributes:
+  - limit: Number of testimonials to show (default: 5).
+- Usage: Add `[video_testimonials limit="3"]` to a page or post.
+- Displays: Title, video (if uploaded), and content for each testimonial.
 
 Setup Instructions
 ------------------
 1. Installation:
    - Upload the `wpproatoz-cptform-creators` folder to `/wp-content/plugins/`.
    - Activate the plugin via the WordPress admin Plugins page.
-   - Install and activate Advanced Custom Fields (ACF) when prompted.
+   - Install and activate Advanced Custom Fields Pro (ACF Pro) when prompted.
 
 2. Configuration:
    - Go to **Video Testimonials > ACF Custom Form** in the WordPress admin.
@@ -49,7 +49,7 @@ Setup Instructions
 3. Using Shortcodes:
    - Create a page (e.g., "Submit Testimonial") and add `[video_testimonial_form]`.
    - Create a page (e.g., "Testimonials") and add `[video_testimonials limit="5"]`.
-   - Ensure the `video-testimonial` CPT and `video_upload` field (key: field_682e59ec3b45a) are set up in ACF.
+   - Ensure the `video-testimonial` CPT and `video_upload` field (key: field_682e59ec3b45a) are set up in ACF Pro.
 
 4. Managing Testimonials:
    - Go to **Video Testimonials > All Video Testimonials** to view submissions.
@@ -64,7 +64,7 @@ Setup Instructions
 
 Troubleshooting
 ---------------
-- **Form Not Displaying**: Ensure ACF is active and the `video-testimonial` CPT exists.
+- **Form Not Displaying**: Ensure ACF Pro is active and the `video-testimonial` CPT exists.
 - **Video Upload Fails**: Check `php.ini` settings (`upload_max_filesize = 30M`, `post_max_size = 32M`).
 - **Labels Not Updating**: Clear browser/server cache and verify settings in **ACF Custom Form**.
 - **reCAPTCHA Issues**: Confirm valid keys and correct domain at https://www.google.com/recaptcha/admin.

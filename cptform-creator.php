@@ -1,10 +1,10 @@
 <?php
 /**
  * Plugin Name: ACF Custom Frontend Submission Form
- * Description: This plugin contains extra custom functions.
+ * Description: This plugin contains extra custom functions to allow front end submissions of limited items using a custom ACF Pro post type.
  * Author: WPProAtoZ
- * Author URI: https://wpproatoz.com 
- * Version: 1.0
+ * Author URI: https://wpproatoz.com
+ * Version: 1.0.1
  * Requires at least: 6.0
  * Requires PHP: 8.0
  * Author: WPProAtoZ.com
@@ -13,30 +13,23 @@
  * Update URI: https://github.com/Ahkonsu/wpproatoz-cptform-creators/releases
  * GitHub Plugin URI: https://github.com/Ahkonsu/wpproatoz-cptform-creators/releases
  * GitHub Branch: main
- * Requires Plugins: advanced-custom-fields
+ * Requires Plugins: advanced-custom-fields-pro
  */
 
-////***check for updates code
-
+/**
+ * Check for updates code
+ */
 require 'plugin-update-checker/plugin-update-checker.php';
 use YahnisElsts\PluginUpdateChecker\v5\PucFactory;
 
 $myUpdateChecker = PucFactory::buildUpdateChecker(
-	'https://github.com/Ahkonsu/wpproatoz-cptform-creator/',
-	__FILE__,
-	'wpproatoz-cptform-creator'
+    'https://github.com/Ahkonsu/wpproatoz-cptform-creator/',
+    __FILE__,
+    'wpproatoz-cptform-creator'
 );
 
-//Set the branch that contains the stable release.
+// Set the branch that contains the stable release.
 $myUpdateChecker->setBranch('main');
-
-//$myUpdateChecker->getVcsApi()->enableReleaseAssets();
- 
- 
-//Optional: If you're using a private repository, specify the access token like this:
-//$myUpdateChecker->setAuthentication('your-token-here');
-
-/////////////////////
 
 /**
  * Enqueue scripts and styles
@@ -49,7 +42,7 @@ function vt_scripts() {
         $recaptcha_type = get_option('vt_recaptcha_type', 'none');
         $recaptcha_site_key = get_option('vt_recaptcha_site_key', '');
         if ($recaptcha_type !== 'none' && !empty($recaptcha_site_key)) {
-            $script_url = $recaptcha_type === 'v3' 
+            $script_url = $recaptcha_type === 'v3'
                 ? 'https://www.google.com/recaptcha/api.js?render=' . esc_attr($recaptcha_site_key)
                 : 'https://www.google.com/recaptcha/api.js';
             wp_enqueue_script('google-recaptcha', $script_url, array(), null, true);
@@ -79,20 +72,24 @@ add_action('tgmpa_register', 'vt_register_required_plugins');
 function vt_register_required_plugins() {
     $plugins = array(
         array(
-            'name'      => 'Advanced Custom Fields (ACF)',
-            'slug'      => 'advanced-custom-fields',
-            'required'  => true,
+            'name' => 'Advanced Custom Fields Pro (ACF Pro)',
+            'slug' => 'advanced-custom-fields-pro',
+            'source' => 'https://www.advancedcustomfields.com', // Official ACF Pro download page
+            'required' => true,
+            'external_url' => 'https://www.advancedcustomfields.com/pro/', // Link for manual download
+            'force_activation' => false,
+            'force_deactivation' => false,
         ),
     );
 
     $config = array(
-        'id'           => 'vt-extra',
+        'id' => 'vt-extra',
         'default_path' => '',
-        'menu'         => 'tgmpa-install-plugins',
-        'parent_slug'  => 'plugins.php',
-        'capability'   => 'manage_options',
-        'has_notices'  => true,
-        'dismissable'  => true,
+        'menu' => 'tgmpa-install-plugins',
+        'parent_slug' => 'plugins.php',
+        'capability' => 'manage_options',
+        'has_notices' => true,
+        'dismissable' => true,
         'is_automatic' => false,
     );
 
@@ -116,7 +113,7 @@ add_shortcode('video_testimonial_form', 'vt_display_submission_form');
 
 function vt_display_submission_form() {
     if (!class_exists('ACF')) {
-        return '<p>Error: Advanced Custom Fields is required to use this form.</p>';
+        return '<p>Error: Advanced Custom Fields Pro is required to use this form.</p>';
     }
 
     // Check form access setting
@@ -144,34 +141,34 @@ function vt_display_submission_form() {
             $recaptcha_html = '<div class="g-recaptcha" data-sitekey="' . esc_attr($recaptcha_site_key) . '"></div>';
         } elseif ($recaptcha_type === 'v3') {
             $recaptcha_html = '
-                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-                        grecaptcha.ready(function() {
-                            grecaptcha.execute("' . esc_attr($recaptcha_site_key) . '", {action: "submit_testimonial"}).then(function(token) {
-                                document.getElementById("g-recaptcha-response").value = token;
-                            });
-                        });
-                    });
-                </script>';
+<input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    grecaptcha.ready(function() {
+        grecaptcha.execute("' . esc_attr($recaptcha_site_key) . '", {action: "submit_testimonial"}).then(function(token) {
+            document.getElementById("g-recaptcha-response").value = token;
+        });
+    });
+});
+</script>';
         }
     } else {
         $recaptcha_html = '<input type="text" name="vt_honeypot" style="display:none;" value="">';
     }
 
     acf_form(array(
-        'post_id'       => 'new_post',
-        'post_title'    => true,
-        'post_content'  => true,
-        'form'          => true,
-        'new_post'      => array(
-            'post_type'     => 'video-testimonial',
-            'post_status'   => 'pending',
-            'post_author'   => is_user_logged_in() ? get_current_user_id() : 1 // Current user if logged in, else default (admin)
+        'post_id' => 'new_post',
+        'post_title' => true,
+        'post_content' => true,
+        'form' => true,
+        'new_post' => array(
+            'post_type' => 'video-testimonial',
+            'post_status' => 'pending',
+            'post_author' => is_user_logged_in() ? get_current_user_id() : 1 // Current user if logged in, else default (admin)
         ),
-        'fields'        => array('field_682e59ec3b45a'), // Correct video_upload field key
-        'submit_value'  => 'Submit Testimonial',
-        'return'        => add_query_arg('submitted', 'true', get_permalink()),
+        'fields' => array('field_682e59ec3b45a'), // Correct video_upload field key
+        'submit_value' => 'Submit Testimonial',
+        'return' => add_query_arg('submitted', 'true', get_permalink()),
         'form_attributes' => array(
             'enctype' => 'multipart/form-data'
         ),
@@ -293,11 +290,11 @@ function vt_display_testimonials($atts) {
     ), $atts);
 
     $query_args = array(
-        'post_type'      => 'video-testimonial',
+        'post_type' => 'video-testimonial',
         'posts_per_page' => $a['limit'],
-        'post_status'    => 'publish',
-        'orderby'        => 'date',
-        'order'          => 'DESC'
+        'post_status' => 'publish',
+        'orderby' => 'date',
+        'order' => 'DESC'
     );
 
     $query = new WP_Query($query_args);
@@ -312,24 +309,24 @@ function vt_display_testimonials($atts) {
             $content = get_the_content();
 
             $output .= '
-            <li class="vt-testimonial">
-                <div class="testimonial-details">
-                    <h3>' . esc_html($title) . '</h3>';
+<li class="vt-testimonial">
+<div class="testimonial-details">
+<h3>' . esc_html($title) . '</h3>';
 
             if ($video && is_array($video)) {
                 $output .= '
-                    <div class="video-container">
-                        <video controls>
-                            <source src="' . esc_url($video['url']) . '" type="' . esc_attr($video['mime_type']) . '">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>';
+<div class="video-container">
+<video controls>
+<source src="' . esc_url($video['url']) . '" type="' . esc_attr($video['mime_type']) . '">
+Your browser does not support the video tag.
+</video>
+</div>';
             }
 
             $output .= '
-                    <div class="testimonial-content">' . wp_kses_post($content) . '</div>
-                </div>
-            </li>';
+<div class="testimonial-content">' . wp_kses_post($content) . '</div>
+</div>
+</li>';
         }
 
         $output .= '</ul></div>';
@@ -346,57 +343,57 @@ function vt_display_testimonials($atts) {
 add_action('wp_head', 'vt_add_custom_styles');
 function vt_add_custom_styles() {
     echo '
-    <style>
-        .vt-testimonials {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .testimonial-list {
-            list-style: none;
-            padding: 0;
-        }
-        .vt-testimonial {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .video-container {
-            margin: 20px 0;
-            max-width: 100%;
-        }
-        .video-container video {
-            max-width: 100%;
-            height: auto;
-        }
-        .testimonial-content {
-            margin-top: 15px;
-        }
-        .vt-success-message {
-            color: #008000;
-            font-weight: bold;
-            margin-bottom: 20px;
-        }
-        .acf-form .acf-field-file input[type="file"] {
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        .g-recaptcha {
-            margin-bottom: 15px;
-        }
-        .vt-error-message {
-            color: #d63638;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-        .vt-warning-message {
-            color: #e67e22;
-            font-size: 0.9em;
-            margin-top: 5px;
-            margin-bottom: 10px;
-        }
-    </style>';
+<style>
+.vt-testimonials {
+    max-width: 800px;
+    margin: 0 auto;
+}
+.testimonial-list {
+    list-style: none;
+    padding: 0;
+}
+.vt-testimonial {
+    margin-bottom: 20px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+.video-container {
+    margin: 20px 0;
+    max-width: 100%;
+}
+.video-container video {
+    max-width: 100%;
+    height: auto;
+}
+.testimonial-content {
+    margin-top: 15px;
+}
+.vt-success-message {
+    color: #008000;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.acf-form .acf-field-file input[type="file"] {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+.g-recaptcha {
+    margin-bottom: 15px;
+}
+.vt-error-message {
+    color: #d63638;
+    font-weight: bold;
+    margin-top: 5px;
+}
+.vt-warning-message {
+    color: #e67e22;
+    font-size: 0.9em;
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+</style>';
 }
 
 /**
@@ -476,44 +473,45 @@ function vt_manage_testimonials_page() {
             </thead>
             <tbody>
                 <?php if ($testimonials->have_posts()) : while ($testimonials->have_posts()) : $testimonials->the_post(); ?>
-                    <tr>
-                        <td><a href="<?php echo get_edit_post_link(); ?>"><?php the_title(); ?></a></td>
-                        <td><?php echo esc_html(ucfirst(get_post_status())); ?></td>
-                        <td><?php echo get_the_date(); ?></td>
-                        <td>
-                            <?php
-                            $nonce = wp_create_nonce('vt_status_' . get_the_ID());
-                            $publish_url = add_query_arg(array(
-                                'action' => 'publish',
-                                'post_id' => get_the_ID(),
-                                '_wpnonce' => $nonce
-                            ));
-                            $private_url = add_query_arg(array(
-                                'action' => 'private',
-                                'post_id' => get_the_ID(),
-                                '_wpnonce' => $nonce
-                            ));
-                            $draft_url = add_query_arg(array(
-                                'action' => 'draft',
-                                'post_id' => get_the_ID(),
-                                '_wpnonce' => $nonce
-                            ));
-                            ?>
-                            <?php if (get_post_status() !== 'publish') : ?>
-                                <a href="<?php echo esc_url($publish_url); ?>" class="button button-primary">Make Public</a>
-                            <?php endif; ?>
-                            <?php if (get_post_status() !== 'private') : ?>
-                                <a href="<?php echo esc_url($private_url); ?>" class="button button-secondary">Make Private</a>
-                            <?php endif; ?>
-                            <?php if (get_post_status() !== 'draft') : ?>
-                                <a href="<?php echo esc_url($draft_url); ?>" class="button button-secondary">Make Draft</a>
-                            <?php endif; ?>
-                        </tr>
-                    <?php endwhile; wp_reset_postdata(); else : ?>
-                        <tr>
-                            <td colspan="4">No testimonials found.</td>
-                        </tr>
-                    <?php endif; ?>
+                <tr>
+                    <td><a href="<?php echo get_edit_post_link(); ?>"><?php the_title(); ?></a></td>
+                    <td><?php echo esc_html(ucfirst(get_post_status())); ?></td>
+                    <td><?php echo get_the_date(); ?></td>
+                    <td>
+                        <?php
+                        $nonce = wp_create_nonce('vt_status_' . get_the_ID());
+                        $publish_url = add_query_arg(array(
+                            'action' => 'publish',
+                            'post_id' => get_the_ID(),
+                            '_wpnonce' => $nonce
+                        ));
+                        $private_url = add_query_arg(array(
+                            'action' => 'private',
+                            'post_id' => get_the_ID(),
+                            '_wpnonce' => $nonce
+                        ));
+                        $draft_url = add_query_arg(array(
+                            'action' => 'draft',
+                            'post_id' => get_the_ID(),
+                            '_wpnonce' => $nonce
+                        ));
+                        ?>
+                        <?php if (get_post_status() !== 'publish') : ?>
+                        <a href="<?php echo esc_url($publish_url); ?>" class="button button-primary">Make Public</a>
+                        <?php endif; ?>
+                        <?php if (get_post_status() !== 'private') : ?>
+                        <a href="<?php echo esc_url($private_url); ?>" class="button button-secondary">Make Private</a>
+                        <?php endif; ?>
+                        <?php if (get_post_status() !== 'draft') : ?>
+                        <a href="<?php echo esc_url($draft_url); ?>" class="button button-secondary">Make Draft</a>
+                        <?php endif; ?>
+                    </td>
+                </tr>
+                <?php endwhile; wp_reset_postdata(); else : ?>
+                <tr>
+                    <td colspan="4">No testimonials found.</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>
@@ -626,17 +624,17 @@ function vt_acf_form_settings_page() {
             </p>
         </form>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const recaptchaType = document.getElementById('vt_recaptcha_type');
-                const thresholdRow = document.getElementById('vt_recaptcha_v3_threshold_row');
-                
-                function toggleThresholdRow() {
-                    thresholdRow.style.display = recaptchaType.value === 'v3' ? '' : 'none';
-                }
-                
-                toggleThresholdRow();
-                recaptchaType.addEventListener('change', toggleThresholdRow);
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            const recaptchaType = document.getElementById('vt_recaptcha_type');
+            const thresholdRow = document.getElementById('vt_recaptcha_v3_threshold_row');
+
+            function toggleThresholdRow() {
+                thresholdRow.style.display = recaptchaType.value === 'v3' ? '' : 'none';
+            }
+
+            toggleThresholdRow();
+            recaptchaType.addEventListener('change', toggleThresholdRow);
+        });
         </script>
     </div>
     <?php
@@ -652,9 +650,9 @@ function vt_admin_styles($hook) {
     }
     wp_enqueue_style('vt-admin-style', plugin_dir_url(__FILE__) . 'admin-style.css');
     echo '
-    <style>
-        .wp-list-table .column-actions { width: 300px; }
-        .button-primary, .button-secondary { margin-right: 5px; }
-    </style>';
+<style>
+.wp-list-table .column-actions { width: 300px; }
+.button-primary, .button-secondary { margin-right: 5px; }
+</style>';
 }
 ?>
